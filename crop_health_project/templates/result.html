@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crop Analysis Result</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: linear-gradient(to right, #e6f4ea, #d0f0d8);
+            text-align: center;
+            padding-top: 60px;
+        }
+
+        .result-card {
+            background: white;
+            padding: 40px;
+            width: 600px;
+            margin: auto;
+            border-radius: 20px;
+            box-shadow: 0px 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .status {
+            font-size: 22px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .ndvi-box {
+            font-size: 20px;
+            margin-top: 15px;
+        }
+
+        .bar {
+            height: 25px;
+            border-radius: 20px;
+            margin-top: 15px;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 30px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #14532d;
+            color: white;
+        }
+
+        .highlight {
+            background-color: #bbf7d0;
+            font-weight: bold;
+        }
+
+        .ndvi-indicator-container {
+            margin-top: 30px;
+            height: 20px;
+            background: linear-gradient(to right,
+                brown 0%,
+                yellow 20%,
+                lightgreen 40%,
+                green 60%,
+                darkgreen 100%);
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .ndvi-pointer {
+            position: absolute;
+            top: -8px;
+            width: 4px;
+            height: 35px;
+            background-color: black;
+        }
+
+        a {
+            display: block;
+            margin-top: 30px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .ndvi-map img {
+            border-radius: 15px;
+            box-shadow: 0px 5px 20px rgba(0,0,0,0.2);
+            margin-top: 20px;
+            width: 450px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="result-card">
+    <h2>📍 Location: {{ location }}</h2>
+
+    <div class="ndvi-box">
+        NDVI Value: <strong>{{ ndvi }}</strong>
+    </div>
+
+    <div class="bar" style="background-color: {{ color }};"></div>
+
+    <div class="status" style="color: {{ color }};">
+        {{ message }}
+    </div>
+
+    <!-- NDVI Interpretation Table -->
+    <h3 style="margin-top:40px;">📊 NDVI Interpretation</h3>
+
+    <table>
+        <tr>
+            <th>Range</th>
+            <th>Meaning</th>
+        </tr>
+        <tr class="{% if ndvi >= 0 and ndvi < 0.2 %}highlight{% endif %}">
+            <td>0 – 0.2</td>
+            <td>Barren / No Vegetation</td>
+        </tr>
+        <tr class="{% if ndvi >= 0.2 and ndvi < 0.4 %}highlight{% endif %}">
+            <td>0.2 – 0.4</td>
+            <td>Weak Vegetation</td>
+        </tr>
+        <tr class="{% if ndvi >= 0.4 and ndvi < 0.6 %}highlight{% endif %}">
+            <td>0.4 – 0.6</td>
+            <td>Moderate Vegetation</td>
+        </tr>
+        <tr class="{% if ndvi >= 0.6 %}highlight{% endif %}">
+            <td>0.6 – 1.0</td>
+            <td>Healthy Vegetation</td>
+        </tr>
+    </table>
+
+    <!-- NDVI Visual Scale -->
+    <div class="ndvi-indicator-container">
+        <div class="ndvi-pointer" 
+             style="left: {{ ndvi * 100 }}%;"></div>
+    </div>
+
+    <!-- NDVI Map -->
+    <div class="ndvi-map">
+        <h3>🌱 NDVI Map</h3>
+        <img src="{{ ndvi_map }}" alt="NDVI Map">
+    </div>
+
+    <a href="/">🔙 Analyze Another Location</a>
+</div>
+
+</body>
+</html>
